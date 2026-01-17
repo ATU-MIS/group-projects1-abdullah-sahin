@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Yap | Smart Schedule</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="auth-bg">
+
+    <a href="admin.html" class="admin-login-btn">
+        <i class="fa-solid fa-user-shield"></i> Yönetici Girişi
+    </a>
+
+    <div class="auth-container">
+        <div class="logo">
+            <i class="fa-solid fa-layer-group"></i> Smart Schedule
+        </div>
+        
+        <h3 style="color: var(--text-color); margin-bottom: 20px;">Hoş Geldiniz</h3>
+
+        <form onsubmit="event.preventDefault(); loginUser();">
+            <div class="input-group">
+                <label>E-posta Adresi</label>
+                <input type="email" id="loginEmail" placeholder="ornek@mail.com" required>
+            </div>
+
+            <div class="input-group">
+                <label>Şifre</label>
+                <div class="password-wrapper">
+                    <input type="password" id="loginPass" placeholder="******" required>
+                    <i class="fa-solid fa-eye toggle-password-icon" onclick="togglePassword('loginPass', this)"></i>
+                </div>
+            </div>
+
+            <div id="loginError" class="error-msg" style="text-align: center; margin-bottom: 10px; display:none; color:red;">
+                Hatalı E-posta veya Şifre!
+            </div>
+
+            <button type="submit" class="btn-primary">Giriş Yap</button>
+        </form>
+        
+        <div style="margin-top: 20px; font-size: 0.9rem;">
+            <p>Hesabın yok mu? <a href="register.html" style="color: var(--accent); font-weight: bold; text-decoration: none;">Kayıt Ol</a></p>
+        </div>
+    </div>
+    
+    <div class="developer-credit">Developed by Abdullah Şahin</div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

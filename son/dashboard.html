@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel | Smart Schedule</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body onload="checkAuth(); loadUserProfile(); initCalendar();">
+    
+    <nav class="navbar">
+        <div class="nav-logo">
+            <i class="fa-solid fa-layer-group" style="color:var(--primary-dark); font-size:1.5rem;"></i> 
+            <span style="font-weight:bold; color:#334155; font-size:1.2rem; margin-left:10px;">Smart Schedule</span>
+        </div>
+
+        <div class="user-profile-container">
+            <img src="" style="border-radius:50%; width:42px; height:42px; border:2px solid white; box-shadow:0 2px 5px rgba(0,0,0,0.1);" id="userAvatar">
+            <div class="user-info">
+                <span id="displayFullName" style="font-weight:bold; font-size:0.9rem; color:var(--primary-dark);">KULLANICI</span>
+                <span id="displayEmail" style="font-size:0.75rem; color:#64748b;">mail@mail.com</span>
+            </div>
+            <div style="width:1px; height:30px; background:#fed7aa; margin:0 5px;"></div>
+            <button class="logout-btn-styled" onclick="logout()">
+                <i class="fa-solid fa-power-off"></i> Çıkış
+            </button>
+        </div>
+    </nav>
+
+    <div class="main-layout">
+        <aside class="sidebar">
+            <h3 style="color: var(--primary-dark); margin-top:0;"><i class="fa-solid fa-plus-circle"></i> Görev Ekle</h3>
+            
+            <form id="taskForm">
+                <div class="input-group">
+                    <label>Görev Adı</label>
+                    <input type="text" id="taskName" placeholder="Örn: Pazarlama Toplantısı">
+                </div>
+                
+                <div class="input-group">
+                    <label>Tarih</label>
+                    <div class="datetime-container">
+                        <div class="datetime-box">
+                            <i class="fa-regular fa-calendar-days"></i>
+                            <input type="date" id="taskDate">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Saat Aralığı</label>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <div class="datetime-container" style="flex: 1;">
+                            <div class="datetime-box">
+                                <i class="fa-regular fa-clock"></i>
+                                <input type="time" id="taskStartTime" title="Başlangıç">
+                            </div>
+                        </div>
+                        <span style="font-weight:bold; color:#fdba74;">-</span>
+                        <div class="datetime-container" style="flex: 1;">
+                            <div class="datetime-box">
+                                <i class="fa-solid fa-clock-rotate-left"></i>
+                                <input type="time" id="taskEndTime" title="Bitiş">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Detaylar & Notlar</label>
+                    <textarea id="taskDesc" placeholder="Görev hakkında kısa notlar..."></textarea>
+                </div>
+                
+                <button type="button" class="btn-secondary" onclick="addTask()">
+                    <i class="fa-solid fa-check"></i> Takvime Ekle
+                </button>
+            </form>
+        </aside>
+
+        <main class="content">
+            <div class="week-navigator">
+                <button class="nav-btn" onclick="changeWeek(-1)"><i class="fa-solid fa-chevron-left"></i> Önceki Hafta</button>
+                <div class="week-center">
+                    <div class="week-title">
+                        <i class="fa-regular fa-calendar"></i> 
+                        <span id="currentWeekRange">Yükleniyor...</span>
+                    </div>
+                    <input type="date" id="weekPicker" class="week-picker-input" onchange="jumpToWeek(this.value)" title="Bu haftaya git">
+                </div>
+                <button class="nav-btn" onclick="changeWeek(1)">Sonraki Hafta <i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+            
+            <div class="calendar-wrapper">
+                <div class="time-column" id="timeLabels"></div>
+                <div class="day-column" id="day-1"><div class="day-header" id="header-1">Pazartesi</div><div class="day-tasks"></div></div>
+                <div class="day-column" id="day-2"><div class="day-header" id="header-2">Salı</div><div class="day-tasks"></div></div>
+                <div class="day-column" id="day-3"><div class="day-header" id="header-3">Çarşamba</div><div class="day-tasks"></div></div>
+                <div class="day-column" id="day-4"><div class="day-header" id="header-4">Perşembe</div><div class="day-tasks"></div></div>
+                <div class="day-column" id="day-5"><div class="day-header" id="header-5">Cuma</div><div class="day-tasks"></div></div>
+                <div class="day-column weekend" id="day-6"><div class="day-header" id="header-6">Cumartesi</div><div class="day-tasks"></div></div>
+                <div class="day-column weekend" id="day-0"><div class="day-header" id="header-0">Pazar</div><div class="day-tasks"></div></div>
+            </div>
+        </main>
+    </div>
+
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <h3 style="margin:0; color:var(--primary-dark);"><i class="fa-solid fa-pen-to-square"></i> Görevi Düzenle</h3>
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+            </div>
+            
+            <form id="editForm">
+                <div class="input-group">
+                    <label>Görev Adı</label>
+                    <input type="text" id="modalTaskName">
+                </div>
+                
+                <div class="input-group">
+                    <label>Tarih</label>
+                    <input type="date" id="modalTaskDate">
+                </div>
+
+                <div class="input-group">
+                    <label>Saat Aralığı</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="time" id="modalTaskStartTime">
+                        <input type="time" id="modalTaskEndTime">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Detaylar</label>
+                    <textarea id="modalTaskDesc" style="min-height:60px;"></textarea>
+                </div>
+
+                <div style="display: flex; gap: 10px; margin-top: 20px;">
+                    <button type="button" class="btn-primary" onclick="saveModalChanges()">Kaydet</button>
+                    <button type="button" class="btn-delete" onclick="deleteTaskFromModal()" style="flex:1; font-size:1rem;">
+                        <i class="fa-solid fa-trash"></i> Sil
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="developer-credit">Developed by Abdullah Şahin</div>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

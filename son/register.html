@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kayıt Ol | Smart Schedule</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="auth-bg">
+
+    <div class="auth-container" style="width: 400px;">
+        <div class="logo">
+            <i class="fa-solid fa-user-plus"></i> Kayıt Ol
+        </div>
+        
+        <div id="step1">
+            <div class="input-group">
+                <label>Ad</label>
+                <input type="text" id="regName" placeholder="Adınız" required>
+            </div>
+            <div class="input-group">
+                <label>Soyad</label>
+                <input type="text" id="regSurname" placeholder="Soyadınız" required>
+            </div>
+            <div class="input-group">
+                <label>Doğum Tarihi</label>
+                <input type="date" id="regDob" required>
+            </div>
+            <div class="input-group">
+                <label>E-posta</label>
+                <input type="email" id="regEmail" placeholder="ornek@mail.com" required>
+            </div>
+            <div class="input-group">
+                <label>Şifre</label>
+                <div class="password-wrapper">
+                    <input type="password" id="regPass" placeholder="******" required>
+                    <i class="fa-solid fa-eye toggle-password-icon" onclick="togglePassword('regPass', this)"></i>
+                </div>
+            </div>
+
+            <button type="button" id="sendBtn" class="btn-primary" onclick="sendVerificationCode()">
+                Doğrulama Kodu Gönder
+            </button>
+        </div>
+
+        <div id="step2" style="display: none;">
+            <p style="color: var(--primary-dark); font-weight: bold; margin-bottom: 10px;">
+                Mailinize gelen 6 haneli kodu giriniz:
+            </p>
+            <div class="input-group">
+                <input type="text" id="enteredCode" placeholder="123456" style="text-align: center; letter-spacing: 5px; font-size: 1.2rem;">
+            </div>
+            <button type="button" class="btn-primary" onclick="verifyAndRegister()">
+                Kaydı Tamamla
+            </button>
+        </div>
+        
+        <div style="margin-top: 20px; font-size: 0.9rem;">
+            <p>Zaten hesabın var mı? <a href="index.html" style="color: var(--accent); font-weight: bold; text-decoration: none;">Giriş Yap</a></p>
+        </div>
+    </div>
+    
+    <div class="developer-credit">Developed by Abdullah Şahin</div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetici Girişi | Smart Schedule</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="auth-bg">
+
+    <div class="auth-container">
+        <div class="logo" style="color: #9a3412;">
+            <i class="fa-solid fa-user-shield"></i> Yönetici Paneli
+        </div>
+        
+        <form onsubmit="event.preventDefault(); adminLogin();">
+            <div class="input-group">
+                <label>Yönetici E-Posta</label>
+                <input type="email" id="adminEmail" placeholder="admin@mail.com" required>
+            </div>
+
+            <div class="input-group">
+                <label>Yönetici Şifre</label>
+                <div class="password-wrapper">
+                    <input type="password" id="adminPass" placeholder="******" required>
+                    <i class="fa-solid fa-eye toggle-password-icon" onclick="togglePassword('adminPass', this)"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-primary" style="background-color: #9a3412;">Giriş Yap</button>
+        </form>
+        
+        <div style="margin-top: 20px;">
+            <a href="index.html" style="color: #64748b; text-decoration: none;">
+                <i class="fa-solid fa-arrow-left"></i> Kullanıcı Girişine Dön
+            </a>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

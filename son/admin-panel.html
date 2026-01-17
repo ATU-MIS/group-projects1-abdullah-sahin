@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yönetici Paneli | Smart Schedule</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body onload="checkAdminSession(); loadAdminTable();">
+
+    <nav class="navbar" style="border-bottom: 3px solid var(--primary-dark);">
+        <div class="nav-logo" style="color: var(--primary-dark);">
+            <i class="fa-solid fa-user-shield"></i> Yönetici Paneli
+        </div>
+        
+        <button class="logout-btn-styled" onclick="logoutAdmin()">
+            <i class="fa-solid fa-power-off"></i> Çıkış
+        </button>
+    </nav>
+
+    <div class="content" style="align-items: center; padding-top: 40px;">
+        
+        <div class="admin-table-container" style="text-align: center; margin-bottom: 20px; background: #fff7ed; border: 2px solid #fdba74;">
+            <h2 style="color: #9a3412; margin-top:0;">Günlük İşlemler</h2>
+            <p style="color: #64748b; margin-bottom: 20px;">Tüm kullanıcılara sabah 08:00 hatırlatması göndermek için aşağıdaki butona basın.</p>
+            
+            <button onclick="sendDailyReminders()" class="btn-primary" style="max-width: 300px; margin: 0 auto; display: flex; justify-content: center; gap: 10px; align-items: center;">
+                <i class="fa-solid fa-bell"></i> Hatırlatmaları Gönder
+            </button>
+        </div>
+
+        <div class="admin-table-container">
+            <h3 style="color: var(--text-color); border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;">Kayıtlı Kullanıcılar</h3>
+            <div id="loadingMsg" style="text-align:center; padding:20px; color:#94a3b8;">Veriler yükleniyor...</div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Ad Soyad / Email</th>
+                        <th>Doğum Tarihi</th>
+                        <th>Kayıt Tarihi</th>
+                        <th>İşlem</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
